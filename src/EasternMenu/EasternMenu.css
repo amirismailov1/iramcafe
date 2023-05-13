@@ -1,0 +1,82 @@
+.eastern-menu {
+    text-align: center;
+    padding: 2rem;
+    background-color: #fdf1db;
+}
+
+h1 {
+    font-family: 'Tangerine', cursive;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.menu-items {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.menu-item {
+    width: 22%;
+    margin-bottom: 2rem;
+    background-color: #fdf1db;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    text-align: left;
+    font-size: 1.2rem;
+    overflow: hidden; /* скрываем контент, который выходит за пределы карточки */
+    transition: all 0.3s ease; /* добавляем плавный переход при изменении стилей */
+}
+.menu-itemBtn{
+    background-color: #8b4513;
+    color: #fdf1db;
+    font-family: 'Tangerine', cursive;
+    font-size: 1.2rem;
+    border: 2px solid #d4af37;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+.menu-itemBtn:hover{
+    background-color: #d4af37;
+    color: #8b4513;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.menu-item:hover {
+    /* при наведении добавляем эффект увеличения */
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.item-details {
+    padding: 1rem;
+}
+
+.item-details img {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.item-details h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.item-details p {
+    margin-bottom: 1rem;
+}
+
+.price {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f9b384;
+}

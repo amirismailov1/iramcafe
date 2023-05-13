@@ -1,0 +1,92 @@
+.header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fdf1db;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Tangerine', cursive;
+    font-size: 32px;
+    width: 10%;
+    color: #8b5e3c;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav__list {
+    display: flex;
+    align-items: center;
+    margin-left: 40px;
+}
+
+.nav__item {
+    margin-right: 30px;
+}
+
+.nav__link {
+    font-family: 'Tangerine', cursive;
+    font-size: 24px;
+    color: #8b5e3c;
+    text-decoration: none;
+}
+
+.nav__link:hover {
+    color: #be9d78;
+}
+
+.user-nav {
+    display: flex;
+    align-items: center;
+}
+
+.user-nav__list {
+    display: flex;
+    align-items: center;
+}
+
+.user-nav__item {
+    margin-right: 20px;
+}
+
+.user-nav__link {
+    font-family: 'Tangerine', cursive;
+    font-size: 24px;
+    color: #8b5e3c;
+    text-decoration: none;
+}
+
+.user-nav__link:hover {
+    color: #be9d78;
+}
+
+.user-nav__button {
+    font-family: 'Tangerine', cursive;
+    font-size: 24px;
+    color: #8b5e3c;
+    background-color: #fff;
+    border: 2px solid #8b5e3c;
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-nav__button:hover {
+    background-color: #8b5e3c;
+    color: #fff;
+}
