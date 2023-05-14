@@ -38,13 +38,10 @@ const AdminPanel = () => {
             window.location.href = '/';
         }
     }, []);
-    const fetchMenuItems = async () => {
-        try {
-            const response = await axios.get('/menu');
-            setMenuItems(response.data);
-        } catch (error) {
-            console.error('Error fetching menu items:', error);
-        }
+    const fetchMenuItems =  () => {
+        axios.get('http://localhost:3001/menu')
+            .then(response => setMenuItems(response.data))
+            .catch(error => console.error('Error fetching menu items:', error));
     };
     useEffect(() => {
         fetchMenuItems();
@@ -89,10 +86,10 @@ const AdminPanel = () => {
         });
     };
 
-    const handleDelete = async (id) => {
-        await axios.delete(`/menu/${id}`);
-        fetchMenuItems();
-    };
+        const handleDelete = async (id) => {
+            await axios.delete(`/menu/${id}`);
+            fetchMenuItems();
+        };
 
     const handleEdit = (item) => {
         setSelectedItem(item.id);
