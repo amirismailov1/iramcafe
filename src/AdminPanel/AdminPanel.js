@@ -4,12 +4,14 @@ import './AdminPanel.css';
 
 
 
-const AdminPanel = () => {
-    const [menuItems, setMenuItems] = useState([]);
+const AdminPanel = ({menuItems,setMenuItems}) => {
+
     const [selectedItem, setSelectedItem] = useState(null);
 
     const [selectedFile, setSelectedFile] = useState(null);
-    const [selectedFile2, setSelectedFile2] = useState(null);
+    const [selectedFile2, setSelectedFile2] = useState(null)
+    const [orders,setOrders] = useState([]);
+
 
 
 
@@ -22,7 +24,23 @@ const AdminPanel = () => {
     });
     const [user, setUser] = useState(null);
     const [showMenu, setShowMenu] = useState(true);
+    const toggleOrderStatus = async (id, status) => {
+        const newStatus = status === 'Новый' ? 'Готов' : 'Новый';
+        await axios.put(`/orders/${id}`, { status: newStatus });
+        axios.get('http://localhost:3001/orders')
+            .then(res=>setOrders([...orders,res.data]))
+            .catch(err=>console.error('Error fetching orders:',err))
 
+    };
+    useEffect(()=>{
+        axios.get('http://localhost:3001/orders')
+            .then(res=>{
+                if (res.data) {
+                    setOrders([...orders,...res.data]);
+                }
+            })
+            .catch(err=>console.error('Error fetching orders:',err))
+    },[]);
 
 
     useEffect(() => {
@@ -43,9 +61,7 @@ const AdminPanel = () => {
             .then(response => setMenuItems(response.data))
             .catch(error => console.error('Error fetching menu items:', error));
     };
-    useEffect(() => {
-        fetchMenuItems();
-    }, []);
+
 
 
     const handleCancelEdit = () => {
@@ -86,10 +102,11 @@ const AdminPanel = () => {
         });
     };
 
-        const handleDelete = async (id) => {
-            await axios.delete(`/menu/${id}`);
-            fetchMenuItems();
-        };
+
+    const handleDelete = async (id) => {
+        await axios.delete(`/menu/${id}`);
+        fetchMenuItems();
+    };
 
     const handleEdit = (item) => {
         setSelectedItem(item.id);
@@ -141,21 +158,13 @@ const AdminPanel = () => {
         } catch (error) {
             console.error("Error uploading files:", error);
         }
-    };
-
-
-
-
-
-    const toggleMenu = () => {
+    };const toggleMenu = () => {
         setShowMenu(!showMenu);
     };
-
-
     return (
         <div className='admin-panel'>
             <h2 className="admin-panel-heading">Admin Panel</h2>
-            {user && <p>Добро пожаловать, {user.username}!</p>}
+            {user && <p className='admin-panel-welcome'>Добро пожаловать, {user.username}!</p>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -193,18 +202,18 @@ const AdminPanel = () => {
                     placeholder="3D Model URL"
                 />
 
-                    <input
-                        type="file"
-                        onChange={onFileChange}
-                    />
+                <input
+                    type="file"
+                    onChange={onFileChange}
+                />
 
 
-                    <input
-                        type="file"
-                        onChange={onFileChange2}
-                    />
+                <input
+                    type="file"
+                    onChange={onFileChange2}
+                />
                 <button type="button" onClick={onFileUpload}>
-                    Upload
+                    Загрузить
                 </button>
 
 
@@ -213,8 +222,8 @@ const AdminPanel = () => {
 
                 <button type="submit">{selectedItem ? 'Update' : 'Add'} Menu Item</button>
             </form>
-            <button onClick={toggleMenu}>{showMenu ? 'Hide Menu' : 'Show Menu'}</button>
-            {showMenu && (
+            <button onClick={toggleMenu}>{showMenu ? 'Показать заказы' : 'Показать меню'}</button>
+            {showMenu ? (
                 <ul className="menu-items">
                     {menuItems.map(item => (
                         <li className="menu-item" key={item.id}>
@@ -223,10 +232,32 @@ const AdminPanel = () => {
                                 <h2>{item.name}</h2>
                                 <span className="price">{item.price}</span>
                             </div>
-                            <button onClick={() => handleEdit(item)}>Edit</button>
-                            <button onClick={() => handleDelete(item.id)}>Delete</button>
+                            <button onClick={() => handleEdit(item)}>Изменить</button>
+                            <button onClick={() => handleDelete(item.id)}>Удалить</button>
                         </li>
                     ))}
+                </ul>
+            ) : (
+                <ul className="order-items">
+                    {orders.map(order => (
+                        <li className='order-item' key={order.id}>
+                            <h2 className="order-text">{order.name}</h2>
+                            <p className='order-text'>{order.phone}</p>
+                            {
+                                order.items && JSON.parse(order.items).map(item => (
+                                    <div className="item-details">
+                                        <h2>{item.name}</h2>
+                                        <p>{item.count}</p>
+                                        <span className="price">{item.price}</span>
+                                    </div>
+                                ))
+                            }
+                            <p className='order-text' onClick={() => toggleOrderStatus(order.id, order.status)}>Статус заказа: {order.status}</p>
+                            <p className='order-text'>Общая сумма: {order.items && JSON.parse(order.items).reduce((acc, item) => acc + (item.price * item.count), 0)} руб</p>
+                        </li>
+                    ))}
+
+
                 </ul>
             )}
             {selectedItem && (
@@ -238,4 +269,3 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
-

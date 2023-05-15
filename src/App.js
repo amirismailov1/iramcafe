@@ -3,14 +3,26 @@ import { Route, Routes } from 'react-router-dom';
 import EasternMenu from './EasternMenu/EasternMenu';
 import AdminPanel from './AdminPanel/AdminPanel';
 import LoginForm from './LoginForm/LoginForm';
+import RegisterForm from "./RegisterForm/RegisterForm";
 import Header from './Header/Header';
+import Checkout from './Checkout/Checkout';
 import Cart from './Cart/Cart';
+import Account from "./Account/Account";
 import './style.css'
+import axios from "axios";
 
 function App() {
     const [cart, setCart] = useState([]);
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState({ username: '' });
+    const [menuItems, setMenuItems] = useState([]);
+
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/menu')
+            .then(response => setMenuItems(response.data))
+            .catch(error => console.error('Error fetching menu items:', error));
+    }, []);
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cart'));
@@ -75,10 +87,12 @@ function App() {
                 deleteFromCart={deleteFromCart}
             />
             <Routes>
-                <Route path="/" element={<EasternMenu cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} />} />
+                <Route path="/" element={<EasternMenu cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} menuItems={menuItems}  />} />
                 <Route path="/login" element={<LoginForm />} />
-                <Route path="/register" element={<LoginForm />} />
-                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="/account" element={<Account user={user} setUser={setUser} />} />
+                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/admin" element={<AdminPanel menuItems={menuItems} setMenuItems={setMenuItems} /> } />
+                <Route path="/checkout" element={<Checkout user={user} cart={cart} setCart={setCart} />} />
             </Routes>
 
         </div>

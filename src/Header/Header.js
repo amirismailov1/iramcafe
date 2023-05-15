@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import './Header.css'
 import LOGO from '../IramLogo.png'
@@ -14,7 +14,8 @@ const Header = ({user, cart, setUser, setOpen}) => {
         if (!localStorage.getItem('user')) {
             setUser(null);
         }
-    }, []);
+    }, [user, setUser]);
+
 
     const handleLogout = (e) => {
         localStorage.removeItem('user');
@@ -34,11 +35,6 @@ const Header = ({user, cart, setUser, setOpen}) => {
             </div>
             <nav className="nav">
                 <ul className="nav__list">
-                    <li className="nav__item">
-                        <Link to="/menu" className="nav__link">
-                            Меню
-                        </Link>
-                    </li>
                     <li className="nav__item">
                         <Link to="/about" className="nav__link">
                             О нас

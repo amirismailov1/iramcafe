@@ -29,7 +29,7 @@ const Cart = ({ user, cart, setCart, addToCart, open, setOpen, removeFromCart, d
                                         <li key={el.id} className={styles.item}>
                                             <img className={styles.itemImg} src={el.image} alt=""/>
                                             <div className={styles.itemCenter}>
-                                                <h4 className={styles.itemTitle}>{el.title}</h4>
+                                                <h4 className={styles.itemTitle}>{el.name}</h4>
                                                 <p className={styles.itemPrice}>{el.price * el.count} руб.</p>
                                                 <div className={styles.itemCount}>
                                                     <button className={styles.itemCountBtn} type='button' onClick={()=>removeFromCart( el.title)}>-</button>
@@ -57,9 +57,9 @@ const Cart = ({ user, cart, setCart, addToCart, open, setOpen, removeFromCart, d
                                 </div>
 
                                 <button type='button' className={styles.cartFooterBtn} onClick={() => {
-                                    if (user.email.length){
+                                    if (user.username.length){
                                         setOpen(false);
-                                        navigate('/orders')}
+                                        navigate('/checkout')}
                                     else{
                                         alert('Войдите в аккаунт');
                                         setOpen(false);

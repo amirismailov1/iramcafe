@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './EasternMenu.css';
-import axios from "axios";
+
 import ItemPopup from './ItemPopup/ItemPopup';
 
-const EasternMenu = ({ cart, addToCart, removeFromCart }) => {
-    const [menuItems, setMenuItems] = useState([]);
+const EasternMenu = ({ cart, addToCart, removeFromCart,menuItems }) => {
+
     const [showPopup, setShowPopup] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
 
-    useEffect(() => {
-        axios.get('http://localhost:3001/menu')
-            .then(response => setMenuItems(response.data))
-            .catch(error => console.error('Error fetching menu items:', error));
-    }, []);
+
 
     const openPopup = (item) => {
         setSelectedItem(item);

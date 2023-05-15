@@ -1,15 +1,14 @@
 * {
+    padding: 0;
+    margin: 0;
     font-family: 'Tangerine', cursive;
 
+box-sizing: border-box;
     color: #5f3919;
     list-style-type: none;
     text-decoration: none;
 }
-.ar-scene {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow: hidden;
+.App{
+    height: 100%;
+    width: 100%;
 }

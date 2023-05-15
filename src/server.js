@@ -1,3 +1,5 @@
+
+
 const { Sequelize } = require('sequelize');
 const express = require('express');
 const cors = require('cors');
@@ -160,7 +162,7 @@ app.post('/menu', (req, res) => {
 
 // Обновить элемент меню
 app.put('/menu/:id', (req, res) => {
-    Menu.update(req.body, { where: { id: req.params.id } }).then(() => {
+    Menu.update(req.body, { where: {id: req.params.id}}).then(() => {
         res.json({ message: 'Menu item updated successfully.' });
     }).catch(error => {
         console.error('Error updating menu item:', error);
@@ -177,6 +179,67 @@ app.delete('/menu/:id', (req, res) => {
         res.status(500).json({ error: 'An error occurred while deleting the menu item.' });
     });
 });
+const Order = sequelize.define('order', {
+    name: Sequelize.STRING,
+    phone: Sequelize.STRING,
+    address: Sequelize.STRING,
+    items: Sequelize.TEXT,  // JSON данные о позициях заказа
+    status: Sequelize.STRING, // Статус заказа
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE
+}, {
+    tableName: 'orders',
+    timestamps: false
+});
+
+app.post('/orders', async (req, res) => {
+    try {
+        const { name, phone, address, items } = req.body;
+        const newOrder = await Order.create({
+            name,
+            phone,
+            address,
+            items: JSON.stringify(items),
+            status: 'Новый',
+            createdAt: new Date(),
+            updatedAt: new Date()
+        });
+        res.status(201).json(newOrder);
+    } catch (error) {
+        console.error('Error creating order:', error);
+        res.status(500).json({ error: 'An error occurred while creating order' });
+    }
+});
+
+
+app.get('/orders', async (req, res) => {
+    try {
+        const orders = await Order.findAll();
+        res.status(200).json(orders);
+    } catch (error) {
+        console.error('Error getting orders:', error);
+        res.status(500).json({ error: 'An error occurred while getting orders' });
+    }
+});
+
+app.put('/orders/:id', async (req, res) => {
+    const { status } = req.body;
+    try {
+        const order = await Order.findByPk(req.params.id);
+        if (order) {
+            order.status = status;
+            await order.save();
+            res.json({ message: 'Order status updated successfully.' });
+        } else {
+            res.status(404).json({ message: 'Order not found.' });
+        }
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        res.status(500).json({ error: 'An error occurred while updating order status.' });
+    }
+});
+
+
 
 
 
